@@ -53,6 +53,66 @@ server.get('/citas', async (req, res)=>{
   }
 });
 
+//añadir
+server.post ('/citas', async (req, res)=>{
+  try {
+    const conn = await getDBconnection ();
+    const {Fecha, Hora, Motivo, FK_ID_Paciente, FK_ID_Doctor} = req.body;
+    //guardar en la base de datos
+    const sqlInsert =
+    'INSERT INTO citas (Fecha, Hora, Motivo, FK_ID_Paciente, FK_ID_Doctor) VALUES (?, ?, ?, ?, ?)';
+
+    const [result] = await conn.query(sqlInsert, [
+      Fecha, 
+      Hora, 
+      Motivo, 
+      FK_ID_Paciente,
+      FK_ID_Doctor
+    ]);
+    if (result) {
+      res.status (201).json({
+        success: true,
+        id: result.insertId, //nuevo id que se inserta en la fila de mysql
+      });
+    } else {
+      res.status (400).json({
+        success: false,
+        id: "No se ha podido añadir al nuevo paciente",
+    });
+   } 
+   conn.end();
+  } catch (error) {
+    res.status(500).json(error)
+  }
+});
+
+//eliminar citas
+server.delete('/citas/:idCitas', async (req, res)=>{
+  const { idCitas } = req.params;
+  try {
+    const conn = await getDBconnection();
+    const sqlDelete = 'DELETE FROM citas WHERE  ID_Cita = ?';
+    const [result] = await conn.query(sqlDelete, [idCitas]);
+    if (result.affectedRows >0){
+      res.status(200).json({success: true});
+    } else {
+      res.status(400).json({
+        success: false,
+        message: 'Cita no encontrado. '
+      })
+    }
+    conn.end(); 
+  } catch (error) {
+    console.error("Error al eliminar la cita", error);
+    res.status(500).json({
+      success: false,
+      message: "Error interno del servidor.",
+    });
+  }
+
+} )
+
+
 //endpointS DOCTORES
 //listado
 server.get("/doctores", async (req, res)=>{
@@ -125,7 +185,8 @@ server.post ('/pacientes', async (req, res)=>{
         success: false,
         id: "No se ha podido añadir al nuevo paciente",
     });
-  } 
+   } 
+   conn.end();
   } catch (error) {
     res.status(500).json(error)
   }
@@ -149,6 +210,7 @@ server.put('/pacientes/:idPaciente', async (req, res) => {
               message: "No se encontró el paciente o no se realizaron cambios.",
           });
       }
+      conn.end();
   } catch (error) {
       console.error("Error al actualizar el paciente:", error);
       res.status(500).json({
@@ -157,3 +219,29 @@ server.put('/pacientes/:idPaciente', async (req, res) => {
       });
   }
 });
+
+//eliminar paciente
+server.delete('/pacientes/:idPaciente', async (req, res)=>{
+  const { idPaciente } = req.params;
+  try {
+    const conn = await getDBconnection();
+    const sqlDelete = 'DELETE FROM pacientes WHERE  ID_Paciente = ?';
+    const [result] = await conn.query(sqlDelete, [idPaciente]);
+    if (result.affectedRows >0){
+      res.status(200).json({success: true});
+    } else {
+      res.status(400).json({
+        success: false,
+        message: 'Paciente no encontrado. '
+      })
+    }
+    conn.end(); 
+  } catch (error) {
+    console.error("Error al eliminar el paciente:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error interno del servidor.",
+    });
+  }
+
+} )
