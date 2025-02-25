@@ -32,7 +32,8 @@ server.listen(PORT, () => {
 });
 
 
-//endpoint para buscar todas las citas
+//endpoints CITAS
+//Listado
 server.get('/citas', async (req, res)=>{
   try {
     const conn = await getDBconnection ();
@@ -52,7 +53,8 @@ server.get('/citas', async (req, res)=>{
   }
 });
 
-//endpoint para buscar por doctores
+//endpointS DOCTORES
+//listado
 server.get("/doctores", async (req, res)=>{
   try {
     const conn = await getDBconnection ();
@@ -66,8 +68,7 @@ server.get("/doctores", async (req, res)=>{
   }
 });
 
-
-//endpoint para buscar por id de doctores
+// buscar por ID
 server.get("/doctores/:idDoctor", async (req, res)=>{
   try {
     const conn = await getDBconnection ();
@@ -82,7 +83,8 @@ server.get("/doctores/:idDoctor", async (req, res)=>{
   }
 });
 
-//endpoint para buscar por pacientes
+//endpoints PACIENTES
+//listado
 server.get("/pacientes", async (req, res)=>{
   try {
     const conn = await getDBconnection ();
@@ -96,8 +98,7 @@ server.get("/pacientes", async (req, res)=>{
   }
 });
 
-//endpoint para añadir un paciente
-
+//añadir
 server.post ('/pacientes', async (req, res)=>{
   try {
     const conn = await getDBconnection ();
@@ -120,12 +121,39 @@ server.post ('/pacientes', async (req, res)=>{
         id: result.insertId, //nuevo id que se inserta en la fila de mysql
       });
     } else {
-      res.status (201).json({
+      res.status (400).json({
         success: false,
         id: "No se ha podido añadir al nuevo paciente",
     });
   } 
   } catch (error) {
     res.status(500).json(error)
+  }
+});
+
+//actualizar datos del paciente
+server.put('/pacientes/:idPaciente', async (req, res) => {
+  const { idPaciente } = req.params;
+  const { Nombre, Fecha_Nacimiento, Direccion, Numero_Telefono, Historial_Medico, Alergias } = req.body;
+
+  try {
+      const conn = await getDBconnection();
+      const updatePaciente = 'UPDATE pacientes SET Nombre=?, Fecha_Nacimiento=?, Direccion=?, Numero_Telefono=?, Historial_Medico=?, Alergias=? WHERE ID_Paciente = ?';
+      const [result] = await conn.query(updatePaciente, [Nombre, Fecha_Nacimiento, Direccion, Numero_Telefono, Historial_Medico, Alergias, idPaciente]);
+
+      if (result.affectedRows > 0) {
+          res.status(200).json({ success: true });
+      } else {
+          res.status(404).json({
+              success: false,
+              message: "No se encontró el paciente o no se realizaron cambios.",
+          });
+      }
+  } catch (error) {
+      console.error("Error al actualizar el paciente:", error);
+      res.status(500).json({
+          success: false,
+          message: "Error interno del servidor.",
+      });
   }
 });
