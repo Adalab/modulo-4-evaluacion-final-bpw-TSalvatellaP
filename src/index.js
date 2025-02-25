@@ -81,3 +81,51 @@ server.get("/doctores/:idDoctor", async (req, res)=>{
     res.status(500).json(error)
   }
 });
+
+//endpoint para buscar por pacientes
+server.get("/pacientes", async (req, res)=>{
+  try {
+    const conn = await getDBconnection ();
+    const selectPacientes = "SELECT * FROM pacientes";
+    const [results] = await conn.query (selectPacientes);
+    conn.end();
+    res.status (200).json(results);
+
+  } catch (error) {
+    res.status(500).json(error)
+  }
+});
+
+//endpoint para añadir un paciente
+
+server.post ('/pacientes', async (req, res)=>{
+  try {
+    const conn = await getDBconnection ();
+    const {Nombre, Fecha_Nacimiento, Direccion, Numero_Telefono, Historial_Medico, Alergias} = req.body;
+    //guardar en la base de datos
+    const sqlInsert =
+    'INSERT INTO pacientes (Nombre, Fecha_Nacimiento, Direccion, Numero_Telefono, Historial_Medico, Alergias) VALUES (?, ?, ?, ?, ?, ?)';
+
+    const [result] = await conn.query(sqlInsert, [
+      Nombre,
+      Fecha_Nacimiento, 
+      Direccion, 
+      Numero_Telefono, 
+      Historial_Medico, 
+      Alergias,     
+    ]);
+    if (result) {
+      res.status (201).json({
+        success: true,
+        id: result.insertId, //nuevo id que se inserta en la fila de mysql
+      });
+    } else {
+      res.status (201).json({
+        success: false,
+        id: "No se ha podido añadir al nuevo paciente",
+    });
+  } 
+  } catch (error) {
+    res.status(500).json(error)
+  }
+});
