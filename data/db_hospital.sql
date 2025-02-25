@@ -91,4 +91,40 @@ INSERT INTO db_hospital.Citas (Fecha, Hora, Motivo, FK_ID_Paciente, FK_ID_Doctor
 ('2024-11-23','11:30:00','Seguimiento de operación de cadera','4','12'),
 ('2024-11-24','15:00:00','Tratamiento de migraña','5','13');
 
+INSERT INTO Pacientes (Nombre, Fecha_Nacimiento, Direccion, Numero_Telefono, Historial_Medico, Alergias) VALUES
+('Luis Ramírez', '1980-06-12', 'Calle Sevilla, 34. Madrid', '678456789', 'Hipotiroidismo, fractura de tobillo en 2015.', 'Ninguna'),
+('Patricia Gómez', '1992-02-25', 'Avenida Libertad, 56. Madrid', '612987654', 'Rinitis alérgica, problemas digestivos.', 'Polen, lactosa');
+
+INSERT INTO Doctores (Nombre, Apellido, Especialidad, Dia_Semana, Hora_Inicio, Hora_Fin) VALUES
+('Fernando', 'Hernández', 'Endocrinología', 'Martes y jueves', '10:00:00', '14:00:00'),
+('Laura', 'Torres', 'Gastroenterología', 'Lunes, miércoles y viernes', '08:30:00', '13:30:00');
+
+INSERT INTO Tratamientos (Nombre, Descripcion, Medicamentos, FK_ID_Paciente) VALUES
+('Control de tiroides', 'Seguimiento de niveles hormonales y ajuste de medicación.', 'Levotiroxina.', 6),
+('Dieta baja en lactosa', 'Recomendaciones nutricionales para evitar malestar digestivo.', 'Ninguno.', 7);
+
+INSERT INTO Citas (Fecha, Hora, Motivo, FK_ID_Paciente, FK_ID_Doctor) VALUES
+('2024-12-05', '09:45:00', 'Revisión de niveles hormonales', 6, 15),
+('2024-12-10', '11:15:00', 'Consulta por problemas digestivos', 7,14);
+
+UPDATE Pacientes 
+SET Direccion = 'Calle Mayor, 20. Madrid', Numero_Telefono = '611223344' 
+WHERE ID_Paciente = 1;
+
+UPDATE Doctores 
+SET Especialidad = 'Neurología' 
+WHERE ID_Doctor = 3;
+
+UPDATE Citas 
+SET Fecha = '2024-12-15', Hora = '10:00:00' 
+WHERE ID_Cita = 6;
+
+DELETE FROM Pacientes WHERE ID_Paciente = 3;
+DELETE FROM Citas WHERE FK_ID_Paciente = 3;
+DELETE FROM Tratamientos WHERE FK_ID_Paciente = 3;
+
+ALTER TABLE Pacientes MODIFY Nombre TEXT NOT NULL;
+
+ALTER TABLE Doctores MODIFY Nombre TEXT NOT NULL;
+ALTER TABLE Doctores MODIFY Apellido TEXT NOT NULL;
 
