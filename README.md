@@ -69,7 +69,8 @@ npm install swagger-ui-express
 
 ### 3️⃣ Configurar las variables de entorno
 Crea un archivo `.env` en la raíz del proyecto y define:
-    ```
+
+   ```
     HOST_DB=<host_de_la_base_de_datos>
     USER_DB=<usuario_de_la_base_de_datos>
     PASS_DB=<contraseña_de_la_base_de_datos>
