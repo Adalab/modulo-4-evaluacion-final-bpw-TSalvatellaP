@@ -280,6 +280,39 @@ server.post('/register', async (req, res) => {
   }
 });
 
+//LOGGING usuario
+
+server.post('/login', async (req, res) =>{
+try {
+  const conn = await getDBconnection();
+  const {email, pass} = req.body;
+     // Verificar si el usuario ya existe
+  const selectEmail = 'SELECT * FROM usuarios WHERE email = ?';
+  const [resultUser] = await conn.query(selectEmail, [email]);
+  //comprobar contraseña
+  if (resultUser.length !== 0){
+    const passwordDB = resultUser [0].password;
+    const isSamePassword = await bcrypt.compare(pass,passwordDB );
+
+    if (isSamePassword){
+      //si son iguales se crea el token
+      const infoToken = {email: resultUser[0].email, id: resultUser[0].id_usuario}
+      const token = jwt.sign(infoToken, "pepino", {expiresIn: '5min'});
+      res.status (200).json({success: true, token: token});
+    } else{
+      res.status (400).json({success: false, message: "Contraseña incorrecta"});
+    }
+  } else{
+    res.status(400).json({success: false, message: "El email que se ha introducido no existe"})
+  }
+
+  
+} catch (error) {
+   console.error(error);
+    res.status(500).json({ success: false, message: "Error interno del servidor." });
+}
+
+})
 
 
 
