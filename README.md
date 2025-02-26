@@ -70,7 +70,8 @@ El servidor estará corriendo en `http://localhost:3005`
 
 ### 🔐 **Autenticación**
 - **POST** `/register` → Crear un nuevo usuario (requiere email y contraseña)
-- **POST** `/login` → Iniciar sesión y obtener un token
+- **POST** `/login` → Iniciar sesión y obtener un token 
+- **Seguridad:** Utiliza bcrypt para almacenar contraseñas de forma segura y JWT para la autenticación basada en tokens.
 
 ## 🔒 Seguridad y Hashing de Contraseñas
 - Se usa `bcrypt` para almacenar contraseñas de forma segura.

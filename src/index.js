@@ -3,7 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const jwt= require('jsonwebtoken');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const authenticateToken = require('./authenticateToken');
 
 //crear el servidor
 const server = express();
@@ -35,9 +36,10 @@ server.listen(PORT, () => {
 //API RESTful
 //endpoints CITAS
 //Listado
-server.get('/citas', async (req, res)=>{
+server.get('/citas', authenticateToken, async (req, res)=>{
+   
   try {
-    const conn = await getDBconnection ();
+     const conn = await getDBconnection ();
     //crear el sql
     const select = "SELECT * FROM citas";
     const [results] = await conn.query(select);
@@ -55,7 +57,7 @@ server.get('/citas', async (req, res)=>{
 });
 
 //añadir
-server.post ('/citas', async (req, res)=>{
+server.post ('/citas', authenticateToken, async (req, res)=>{
   try {
     const conn = await getDBconnection ();
     const {Fecha, Hora, Motivo, FK_ID_Paciente, FK_ID_Doctor} = req.body;
@@ -88,7 +90,7 @@ server.post ('/citas', async (req, res)=>{
 });
 
 //eliminar citas
-server.delete('/citas/:idCitas', async (req, res)=>{
+server.delete('/citas/:idCitas', authenticateToken, async (req, res)=>{
   const { idCitas } = req.params;
   try {
     const conn = await getDBconnection();
@@ -116,7 +118,7 @@ server.delete('/citas/:idCitas', async (req, res)=>{
 
 //endpointS DOCTORES
 //listado
-server.get("/doctores", async (req, res)=>{
+server.get("/doctores", authenticateToken, async (req, res)=>{
   try {
     const conn = await getDBconnection ();
     const selectDoc = "SELECT * FROM doctores";
@@ -130,7 +132,7 @@ server.get("/doctores", async (req, res)=>{
 });
 
 // buscar por ID
-server.get("/doctores/:idDoctor", async (req, res)=>{
+server.get("/doctores/:idDoctor", authenticateToken, async (req, res)=>{
   try {
     const conn = await getDBconnection ();
     const {idDoctor} = req.params;
@@ -146,7 +148,7 @@ server.get("/doctores/:idDoctor", async (req, res)=>{
 
 //endpoints PACIENTES
 //listado
-server.get("/pacientes", async (req, res)=>{
+server.get("/pacientes", authenticateToken, async (req, res)=>{
   try {
     const conn = await getDBconnection ();
     const selectPacientes = "SELECT * FROM pacientes";
@@ -160,7 +162,7 @@ server.get("/pacientes", async (req, res)=>{
 });
 
 //añadir
-server.post ('/pacientes', async (req, res)=>{
+server.post ('/pacientes',  authenticateToken, async (req, res)=>{
   try {
     const conn = await getDBconnection ();
     const {Nombre, Fecha_Nacimiento, Direccion, Numero_Telefono, Historial_Medico, Alergias} = req.body;
@@ -194,7 +196,7 @@ server.post ('/pacientes', async (req, res)=>{
 });
 
 //actualizar datos del paciente
-server.put('/pacientes/:idPaciente', async (req, res) => {
+server.put('/pacientes/:idPaciente', authenticateToken, async (req, res) => {
   const { idPaciente } = req.params;
   const { Nombre, Fecha_Nacimiento, Direccion, Numero_Telefono, Historial_Medico, Alergias } = req.body;
 
@@ -222,7 +224,7 @@ server.put('/pacientes/:idPaciente', async (req, res) => {
 });
 
 //eliminar paciente
-server.delete('/pacientes/:idPaciente', async (req, res)=>{
+server.delete('/pacientes/:idPaciente', authenticateToken, async (req, res)=>{
   const { idPaciente } = req.params;
   try {
     const conn = await getDBconnection();
@@ -281,6 +283,7 @@ server.post('/register', async (req, res) => {
 });
 
 //LOGGING usuario
+ 
 
 server.post('/login', async (req, res) =>{
 try {
@@ -297,7 +300,8 @@ try {
     if (isSamePassword){
       //si son iguales se crea el token
       const infoToken = {email: resultUser[0].email, id: resultUser[0].id_usuario}
-      const token = jwt.sign(infoToken, "pepino", {expiresIn: '5min'});
+      const token = jwt.sign(infoToken, process.env.JWT_SECRET, {expiresIn: '1h'});
+      conn.end();
       res.status (200).json({success: true, token: token});
     } else{
       res.status (400).json({success: false, message: "Contraseña incorrecta"});
