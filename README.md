@@ -70,6 +70,8 @@ USER_DB=root
 PASS_DB=tu_contraseña
 DATABASE=db_hospital
 PORT=3005
+
+JWT_SECRET=tu_clave_token
 ```
 
 ### 4️⃣ Ejecutar el servidor
