@@ -7,9 +7,10 @@ const mysql = require('mysql2/promise');
 const server = express();
 require("dotenv").config();
 
-// configurar el servidor
+// CONFIGURAR EL SERVIDOR
 server.use(cors());
-server.use(express.json());
+server.use(express.json({limit: '50mb'}));
+server.set('view engine', 'ejs');
 
 //conectarse a la base de datos, es asincrona
 
@@ -31,7 +32,7 @@ server.listen(PORT, () => {
   console.log(`Server is running http://localhost:${PORT}`);
 });
 
-
+//API RESTful
 //endpoints CITAS
 //Listado
 server.get('/citas', async (req, res)=>{
@@ -225,8 +226,10 @@ server.delete('/pacientes/:idPaciente', async (req, res)=>{
   const { idPaciente } = req.params;
   try {
     const conn = await getDBconnection();
+
     const sqlDelete = 'DELETE FROM pacientes WHERE  ID_Paciente = ?';
-    const [result] = await conn.query(sqlDelete, [idPaciente]);
+    const [result] = 
+    await conn.query(sqlDelete, [idPaciente]);
     if (result.affectedRows >0){
       res.status(200).json({success: true});
     } else {
@@ -245,3 +248,9 @@ server.delete('/pacientes/:idPaciente', async (req, res)=>{
   }
 
 } )
+
+//AUTENTICACIÓN 
+
+
+
+

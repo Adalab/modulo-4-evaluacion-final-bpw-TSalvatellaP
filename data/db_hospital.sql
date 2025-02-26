@@ -128,3 +128,45 @@ ALTER TABLE Pacientes MODIFY Nombre TEXT NOT NULL;
 ALTER TABLE Doctores MODIFY Nombre TEXT NOT NULL;
 ALTER TABLE Doctores MODIFY Apellido TEXT NOT NULL;
 
+ALTER TABLE Citas
+DROP FOREIGN KEY fk_Citas_Pacientes1;
+
+ALTER TABLE Citas
+ADD CONSTRAINT fk_Citas_Pacientes1
+FOREIGN KEY (FK_ID_Paciente)
+REFERENCES Pacientes(ID_Paciente)
+ON DELETE CASCADE;
+
+ALTER TABLE Tratamientos
+DROP FOREIGN KEY fk_Tratamientos_Pacientes;
+
+ALTER TABLE Tratamientos
+ADD CONSTRAINT fk_Tratamientos_Pacientes
+FOREIGN KEY (FK_ID_Paciente)
+REFERENCES Pacientes(ID_Paciente)
+ON DELETE CASCADE;
+
+DELETE FROM Pacientes WHERE ID_Paciente = 2;
+
+
+CREATE TABLE IF NOT EXISTS `db_hospital`.`usuarios` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `FK_ID_Paciente` INT NOT NULL,
+  PRIMARY KEY (`id_usuario`, `FK_ID_Paciente`),
+  INDEX `fk_usuarios_db_Pacientes1_idx` (`FK_ID_Paciente` ASC) VISIBLE,
+  CONSTRAINT `fk_usuarios_db_Pacientes1`
+    FOREIGN KEY (`FK_ID_Paciente`)
+    REFERENCES `db_hospital`.`Pacientes` (`ID_Paciente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+INSERT INTO `db_hospital`.`usuarios` (`email`, `nombre`, `password`, `FK_ID_Paciente`) VALUES
+('ana.garcia@email.com', 'Ana García', '$2y$10$EXAMPLE_HASHED_PASSWORD', 1),
+('luis.ramirez@email.com', 'Luis Ramírez', '$2y$10$ANOTHER_EXAMPLE_HASHED_PASSWORD', 6);
+
+DELETE FROM usuarios WHERE id_usuario = 2;
+ALTER TABLE usuarios MODIFY password VARCHAR(255) NOT NULL;
