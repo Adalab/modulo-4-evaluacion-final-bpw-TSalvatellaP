@@ -13,6 +13,7 @@ require("dotenv").config();
 // CONFIGURAR EL SERVIDOR
 server.use(cors());
 server.use(express.json({limit: '50mb'}));
+server.set('view engine', 'ejs');
 
 //conectarse a la base de datos, es asincrona
 
