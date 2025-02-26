@@ -88,6 +88,6 @@ Este proyecto está bajo la licencia **MIT**.
 
 ---
 
-📩 **Autor:** Tu Nombre  
-📌 **Repositorio:** [GitHub](https://github.com/tuusuario/proyecto-hospital)
+📩 **Autor:** Tania Salvatella
+📌 **Repositorio:** [GitHub](https://github.com/Adalab/modulo-4-evaluacion-final-bpw-TSalvatellaP)
 
