@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
+const jwt= require('jsonwebtoken');
+const bcrypt = require('bcrypt')
 
 //crear el servidor
 const server = express();
@@ -10,7 +12,6 @@ require("dotenv").config();
 // CONFIGURAR EL SERVIDOR
 server.use(cors());
 server.use(express.json({limit: '50mb'}));
-server.set('view engine', 'ejs');
 
 //conectarse a la base de datos, es asincrona
 
@@ -22,7 +23,6 @@ async function getDBconnection(){
     database: "db_hospital",
    });
   await connection.connect();
-  
   return connection;
  
 }
@@ -235,7 +235,7 @@ server.delete('/pacientes/:idPaciente', async (req, res)=>{
     } else {
       res.status(400).json({
         success: false,
-        message: 'Paciente no encontrado. '
+        message: "Paciente no encontrado."
       })
     }
     conn.end(); 
@@ -250,6 +250,35 @@ server.delete('/pacientes/:idPaciente', async (req, res)=>{
 } )
 
 //AUTENTICACIÓN 
+//endpoint crear usuario
+server.post('/register', async (req, res) => {
+  try {
+    const conn = await getDBconnection();
+    const { email, nombre, pass, FK_ID_Paciente } = req.body;
+
+    // Verificar si el usuario ya existe
+    const selectEmail = 'SELECT email FROM usuarios WHERE email = ?';
+    const [emailResult] = await conn.query(selectEmail, [email]);
+
+    if (emailResult.length === 0) {
+      // Hashear la contraseña
+      const passwordHashed = await bcrypt.hash(pass, 10);
+
+      // Insertar usuario en la base de datos
+      const insertUser = 'INSERT INTO usuarios (email, nombre, password, FK_ID_Paciente) VALUES (?, ?, ?, ?)';
+      const [result] = await conn.query(insertUser, [email, nombre, passwordHashed, FK_ID_Paciente]);
+
+      conn.end();
+      res.status(201).json({ success: true, id: result.insertId });
+    } else {
+      conn.end();
+      res.status(400).json({ success: false, message: "Usuario ya existe." });
+    }
+  } catch (error) {
+    console.error("Error en el registro:", error);
+    res.status(500).json({ success: false, message: "Error interno del servidor." });
+  }
+});
 
 
 

@@ -151,17 +151,17 @@ DELETE FROM Pacientes WHERE ID_Paciente = 2;
 
 CREATE TABLE IF NOT EXISTS `db_hospital`.`usuarios` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL UNIQUE,
   `nombre` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   `FK_ID_Paciente` INT NOT NULL,
-  PRIMARY KEY (`id_usuario`, `FK_ID_Paciente`),
+  PRIMARY KEY (`id_usuario`),
   INDEX `fk_usuarios_db_Pacientes1_idx` (`FK_ID_Paciente` ASC) VISIBLE,
   CONSTRAINT `fk_usuarios_db_Pacientes1`
     FOREIGN KEY (`FK_ID_Paciente`)
     REFERENCES `db_hospital`.`Pacientes` (`ID_Paciente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 INSERT INTO `db_hospital`.`usuarios` (`email`, `nombre`, `password`, `FK_ID_Paciente`) VALUES
