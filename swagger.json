@@ -56,7 +56,7 @@
           }
         }
       },
-      "/pacientes/{id}": {
+      "/pacientes/{idPaciente}": {
         "get": {
           "summary": "Obtiene un paciente por ID.",
           "parameters": [
@@ -218,7 +218,7 @@
           }
         }
       },
-      "/usuarios": {
+      "/register": {
         "post": {
           "summary": "Crea un nuevo usuario.",
           "requestBody": {

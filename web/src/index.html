@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Interfaz API Hospital</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <h1>API RESTful del Hospital</h1>
+
+  <section id="pacientes">
+    <h2>Pacientes</h2>
+    <button id="obtenerPacientes">Obtener Pacientes</button>
+    <div id="listaPacientes"></div>
+    <h3>Añadir Paciente</h3>
+    <form id="formPaciente">
+      <input type="text" id="nombre" placeholder="Nombre" required>
+      <input type="date" id="fechaNacimiento" placeholder="Fecha de Nacimiento" required>
+      <input type="text" id="direccion" placeholder="Dirección">
+      <input type="text" id="telefono" placeholder="Teléfono" required>
+      <textarea id="historial" placeholder="Historial Médico" required></textarea>
+      <input type="text" id="alergias" placeholder="Alergias">
+      <button type="submit">Añadir</button>
+    </form>
+  </section>
+
+  <section id="citas">
+    <h2>Citas</h2>
+    <button id="obtenerCitas">Obtener Citas</button>
+    <div id="listaCitas"></div>
+    <h3>Añadir Cita</h3>
+    <form id="formCita">
+      <input type="date" id="fechaCita" placeholder="Fecha" required>
+      <input type="time" id="horaCita" placeholder="Hora" required>
+      <input type="text" id="motivoCita" placeholder="Motivo" required>
+      <input type="number" id="pacienteCita" placeholder="ID Paciente" required>
+      <input type="number" id="doctorCita" placeholder="ID Doctor" required>
+      <button type="submit">Añadir</button>
+    </form>
+  </section>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>
