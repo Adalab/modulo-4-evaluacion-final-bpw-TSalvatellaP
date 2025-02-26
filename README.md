@@ -36,6 +36,32 @@ cd proyecto-hospital
 npm install
 ```
 
+```sh
+npm install cors
+````
+
+```sh
+npm install express
+```
+
+```sh
+npm install mysql2
+```
+
+```bash
+sudo npm install -g nodemon
+```
+
+```bash
+npm install jsonwebtoken
+```
+```bash
+npm install dotenv
+```
+```bash
+npm install bcrypt
+```
+
 ### 3️⃣ Configurar las variables de entorno
 Crea un archivo `.env` en la raíz del proyecto y define:
 ```env
@@ -71,7 +97,17 @@ El servidor estará corriendo en `http://localhost:3005`
 ### 🔐 **Autenticación**
 - **POST** `/register` → Crear un nuevo usuario (requiere email y contraseña)
 - **POST** `/login` → Iniciar sesión y obtener un token 
-- **Seguridad:** Utiliza bcrypt para almacenar contraseñas de forma segura y JWT para la autenticación basada en tokens.
+
+# Middleware de Autenticación JWT
+
+Este middleware de Node.js con Express verifica la validez de los tokens JWT en las solicitudes de API.
+
+## Funcionalidad
+
+* **Verificación de Token:** Verifica la presencia y validez de los tokens JWT en el encabezado `Authorization` de las solicitudes.
+* **Formato de Token:** Espera que el token esté en el formato "Bearer TOKEN".
+* **Manejo de Errores:** Proporciona mensajes de error claros y específicos para tokens faltantes, formatos incorrectos, tokens inválidos y tokens expirados.
+* **Decodificación de Token:** Decodifica el token y añade la información del usuario a `req.dataUser` para que las rutas protegidas puedan acceder a ella.
 
 ## 🔒 Seguridad y Hashing de Contraseñas
 - Se usa `bcrypt` para almacenar contraseñas de forma segura.
