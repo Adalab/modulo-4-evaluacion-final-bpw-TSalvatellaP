@@ -1,0 +1,475 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API del Hospital",
+      "version": "1.0.0",
+      "description": "API para gestionar pacientes, doctores, citas, tratamientos y usuarios."
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3005/api"
+      }
+    ],
+    "paths": {
+      "/pacientes": {
+        "get": {
+          "summary": "Obtiene la lista de pacientes.",
+          "responses": {
+            "200": {
+              "description": "Lista de pacientes obtenida con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Paciente"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Crea un nuevo paciente.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PacienteInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Paciente creado con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Paciente"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/pacientes/{id}": {
+        "get": {
+          "summary": "Obtiene un paciente por ID.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Paciente obtenido con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Paciente"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/doctores": {
+        "get": {
+          "summary": "Obtiene la lista de doctores.",
+          "responses": {
+            "200": {
+              "description": "Lista de doctores obtenida con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Doctor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Crea un nuevo doctor.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoctorInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Doctor creado con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Doctor"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/citas": {
+        "get": {
+          "summary": "Obtiene la lista de citas.",
+          "responses": {
+            "200": {
+              "description": "Lista de citas obtenida con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Cita"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Crea una nueva cita.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CitaInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Cita creada con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Cita"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/tratamientos": {
+        "get": {
+          "summary": "Obtiene la lista de tratamientos.",
+          "responses": {
+            "200": {
+              "description": "Lista de tratamientos obtenida con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Tratamiento"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Crea un nuevo tratamiento.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TratamientoInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Tratamiento creado con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Tratamiento"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/usuarios": {
+        "post": {
+          "summary": "Crea un nuevo usuario.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Usuario creado con éxito.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Paciente": {
+          "type": "object",
+          "properties": {
+            "ID_Paciente": {
+              "type": "integer"
+            },
+            "Nombre": {
+              "type": "string"
+            },
+            "Fecha_Nacimiento": {
+              "type": "string",
+              "format": "date"
+            },
+            "Direccion": {
+              "type": "string"
+            },
+            "Numero_Telefono": {
+              "type": "string"
+            },
+            "Historial_Medico": {
+              "type": "string"
+            },
+            "Alergias": {
+              "type": "string"
+            }
+          }
+        },
+        "PacienteInput": {
+          "type": "object",
+          "properties": {
+            "Nombre": {
+              "type": "string"
+            },
+            "Fecha_Nacimiento": {
+              "type": "string",
+              "format": "date"
+            },
+            "Direccion": {
+              "type": "string"
+            },
+            "Numero_Telefono": {
+              "type": "string"
+            },
+            "Historial_Medico": {
+              "type": "string"
+            },
+            "Alergias": {
+              "type": "string"
+            }
+          }
+        },
+        "Doctor": {
+          "type": "object",
+          "properties": {
+            "ID_Doctor": {
+              "type": "integer"
+            },
+            "Nombre": {
+              "type": "string"
+            },
+            "Apellido": {
+              "type": "string"
+            },
+            "Especialidad": {
+              "type": "string"
+            },
+            "Dia_Semana": {
+              "type": "string"
+            },
+            "Hora_Inicio": {
+              "type": "string",
+               "format": "time"
+          },
+          "Hora_Fin": {
+            "type": "string",
+            "format": "time"
+          }
+        }
+      },
+      "DoctorInput": {
+        "type": "object",
+        "properties": {
+          "Nombre": {
+            "type": "string"
+          },
+          "Apellido": {
+            "type": "string"
+          },
+          "Especialidad": {
+            "type": "string"
+          },
+          "Dia_Semana": {
+            "type": "string"
+          },
+          "Hora_Inicio": {
+            "type": "string",
+            "format": "time"
+          },
+          "Hora_Fin": {
+            "type": "string",
+            "format": "time"
+          }
+        }
+      },
+      "Cita": {
+        "type": "object",
+        "properties": {
+          "ID_Cita": {
+            "type": "integer"
+          },
+          "Fecha": {
+            "type": "string",
+            "format": "date"
+          },
+          "Hora": {
+            "type": "string",
+            "format": "time"
+          },
+          "Motivo": {
+            "type": "string"
+          },
+          "FK_ID_Paciente": {
+            "type": "integer"
+          },
+          "FK_ID_Doctor": {
+            "type": "integer"
+          }
+        }
+      },
+      "CitaInput": {
+        "type": "object",
+        "properties": {
+          "Fecha": {
+            "type": "string",
+            "format": "date"
+          },
+          "Hora": {
+            "type": "string",
+            "format": "time"
+          },
+          "Motivo": {
+            "type": "string"
+          },
+          "FK_ID_Paciente": {
+            "type": "integer"
+          },
+          "FK_ID_Doctor": {
+            "type": "integer"
+          }
+        }
+      },
+      "Tratamiento": {
+        "type": "object",
+        "properties": {
+          "ID_Tratamiento": {
+            "type": "integer"
+          },
+          "Nombre": {
+            "type": "string"
+          },
+          "Descripcion": {
+            "type": "string"
+          },
+          "Medicamentos": {
+            "type": "string"
+          },
+          "FK_ID_Paciente": {
+            "type": "integer"
+          }
+        }
+      },
+      "TratamientoInput": {
+        "type": "object",
+        "properties": {
+          "Nombre": {
+            "type": "string"
+          },
+          "Descripcion": {
+            "type": "string"
+          },
+          "Medicamentos": {
+            "type": "string"
+          },
+          "FK_ID_Paciente": {
+            "type": "integer"
+          }
+        }
+      },
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "id_usuario": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "FK_ID_Paciente": {
+            "type": "integer"
+          }
+        }
+      },
+      "UsuarioInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "FK_ID_Paciente": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}
