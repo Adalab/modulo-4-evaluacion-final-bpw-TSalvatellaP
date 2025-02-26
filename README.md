@@ -9,7 +9,7 @@ Este proyecto es un sistema de gestión hospitalaria desarrollado con **Node.js*
 - **Autenticación:** Bcrypt , jsonwebtoken para el hash de contraseñas
 - **Manejo de variables de entorno:** dotenv
 - **Seguridad y CORS:** cors
--**Visualización de la API:** swagger-ui-express
+- **Visualización de la API:** swagger-ui-express
 
 ## 📁 Estructura del Proyecto
 ```
@@ -75,14 +75,15 @@ Crea un archivo `.env` en la raíz del proyecto y define:
     PASS_DB=<contraseña_de_la_base_de_datos>
     JWT_SECRET=<clave_secreta_para_JWT>
     PORT=3005 # O el puerto que desees
+
     ```
 
 ### 4️⃣ Ejecutar el servidor
 ```sh
 npm start
 ```
-La API estará disponible en `http://localhost:3005` (o el puerto configurado).
-La documentación Swagger UI estará disponible en `http://localhost:3005/api`.
+- **La API estará disponible en `http://localhost:3005` (o el puerto configurado).
+- **La documentación Swagger UI estará disponible en `http://localhost:3005/api`.
 
 
 ## 📌 Endpoints API
