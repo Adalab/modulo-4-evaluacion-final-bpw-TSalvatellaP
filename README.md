@@ -76,8 +76,8 @@ Crea un archivo `.env` en la raíz del proyecto y define:
     PASS_DB=<contraseña_de_la_base_de_datos>
     JWT_SECRET=<clave_secreta_para_JWT>
     PORT=3005 # O el puerto que desees
-
     ```
+
 
 ### 4️⃣ Ejecutar el servidor
 ```sh
