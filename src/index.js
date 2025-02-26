@@ -5,7 +5,8 @@ const mysql = require('mysql2/promise');
 const jwt= require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const authenticateToken = require('./authenticateToken');
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerJson = require('../swagger.json');
 //crear el servidor
 const server = express();
 require("dotenv").config();
@@ -16,6 +17,11 @@ server.use(express.json({limit: '50mb'}));
 server.set('view engine', 'ejs');
 
 //conectarse a la base de datos, es asincrona
+//endpoint swagger
+
+server.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerJson));
+
+
 
 async function getDBconnection(){
   const connection = await mysql.createConnection({
@@ -33,6 +39,11 @@ const PORT = 3005;
 server.listen(PORT, () => {
   console.log(`Server is running http://localhost:${PORT}`);
 });
+
+
+
+
+
 
 //API RESTful
 //endpoints CITAS
