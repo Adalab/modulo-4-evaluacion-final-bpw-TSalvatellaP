@@ -6,9 +6,10 @@ Este proyecto es un sistema de gestión hospitalaria desarrollado con **Node.js*
 ## 🚀 Tecnologías Utilizadas
 - **Backend:** Node.js, Express
 - **Base de Datos:** MySQL
-- **Autenticación:** Bcrypt para el hash de contraseñas
+- **Autenticación:** Bcrypt , jsonwebtoken para el hash de contraseñas
 - **Manejo de variables de entorno:** dotenv
 - **Seguridad y CORS:** cors
+-**Visualización de la API:** swagger-ui-express
 
 ## 📁 Estructura del Proyecto
 ```
@@ -61,24 +62,28 @@ npm install dotenv
 ```bash
 npm install bcrypt
 ```
+```bash
+npm install swagger-ui-express
+```
+
 
 ### 3️⃣ Configurar las variables de entorno
 Crea un archivo `.env` en la raíz del proyecto y define:
-```env
-HOST_DB=localhost
-USER_DB=root
-PASS_DB=tu_contraseña
-DATABASE=db_hospital
-PORT=3005
-
-JWT_SECRET=tu_clave_token
-```
+    ```
+    HOST_DB=<host_de_la_base_de_datos>
+    USER_DB=<usuario_de_la_base_de_datos>
+    PASS_DB=<contraseña_de_la_base_de_datos>
+    JWT_SECRET=<clave_secreta_para_JWT>
+    PORT=3005 # O el puerto que desees
+    ```
 
 ### 4️⃣ Ejecutar el servidor
 ```sh
 npm start
 ```
-El servidor estará corriendo en `http://localhost:3005`
+La API estará disponible en `http://localhost:3005` (o el puerto configurado).
+La documentación Swagger UI estará disponible en `http://localhost:3005/api`.
+
 
 ## 📌 Endpoints API
 ### 🏥 **Pacientes**
@@ -100,6 +105,16 @@ El servidor estará corriendo en `http://localhost:3005`
 - **POST** `/register` → Crear un nuevo usuario (requiere email y contraseña)
 - **POST** `/login` → Iniciar sesión y obtener un token 
 
+### Usuarios
+
+* `POST /usuarios`: Crea un nuevo usuario. (requiere autenticación).
+
+### Tratamientos
+
+* `GET /tratamientos`: Obtiene la lista de tratamientos (requiere autenticación).
+* `POST /tratamientos`: Crea un nuevo tratamiento (requiere autenticación).
+
+
 # Middleware de Autenticación JWT
 
 Este middleware de Node.js con Express verifica la validez de los tokens JWT en las solicitudes de API.
@@ -117,10 +132,13 @@ Este middleware de Node.js con Express verifica la validez de los tokens JWT en 
 - `jsonwebtoken` puede ser agregado para la autenticación basada en tokens.
 
 ## 📌 Mejoras Futuras
-- 🔹 Implementación de JWT para la autenticación.
-- 🔹 Agregar middleware de autorización.
-- 🔹 Integración con un frontend en React o Angular.
-- 🔹 Implementación de roles y permisos.
+* Validación de datos en las solicitudes.
+* Manejo de errores más detallado.
+* Pruebas unitarias e integración.
+* Organización del código en módulos separados.
+* Implementación de endpoints para la tabla `tratamientos`.
+* Implementación de endpoints para poder ver la información de los usuarios.
+* Middleware para el manejo de los errores.
 
 ## 📄 Licencia
 Este proyecto está bajo la licencia **MIT**.
